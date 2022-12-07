@@ -1,0 +1,8 @@
+[requires]
+boost-ext-ut/1.1.8
+libmpu/[>=0.0.0]
+
+[generators]
+CMakeToolchain
+CMakeDeps
+VirtualRunEnv
