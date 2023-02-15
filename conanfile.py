@@ -10,7 +10,7 @@ required_conan_version = ">=1.50.0"
 
 
 class LibmpuConan(ConanFile):
-    name = "libmpu"
+    name = "libhal-mpu"
     version = "0.0.1"
     license = "Apache-2.0"
     url = "https://github.com/conan-io/conan-center-index"
@@ -40,7 +40,7 @@ class LibmpuConan(ConanFile):
         }
 
     def requirements(self):
-        self.requires("libhal/[x]@")
+        self.requires("libhal/0.3.5@")
 
     def validate(self):
         if self.settings.get_safe("compiler.cppstd"):
@@ -76,3 +76,4 @@ class LibmpuConan(ConanFile):
         self.cpp_info.frameworkdirs = []
         self.cpp_info.libdirs = []
         self.cpp_info.resdirs = []
+        self.cpp_info.set_property("cmake_target_name", "libhal::mpu")
