@@ -43,8 +43,8 @@ public:
   /**
    * @brief Constructs and returns MPU object
    *
-   * @param i2c - I2C bus the MPU is connected to
-   * @param device_address - 0x68 if address pin is pulled low, 0x69 if pulled
+   * @param p_i2c - I2C bus the MPU is connected to
+   * @param p_device_address - 0x68 if address pin is pulled low, 0x69 if pulled
    * high
    * @return mpu6050 object
    * @throws std::errc::invalid_byte_sequence - when ID register does not match
@@ -62,7 +62,7 @@ public:
    * @brief Changes the gravity scale that the MPU is reading. The larger the
    * scale, the less precise the reading.
    *
-   * @param gravity_scale - Scales in powers of 2 up to 16.
+   * @param p_gravity_code - Scales in powers of 2 up to 16.
    * @return hal::status - success or errors from i2c communication
    */
   [[nodiscard]] hal::status configure_full_scale(
@@ -112,8 +112,8 @@ private:
   /**
    * @brief MPU6050 Constructor
    *
-   * @param i2c - i2c peripheral used to commnicate with device.
-   * @param address - mpu6050 device address.
+   * @param p_i2c - i2c peripheral used to commnicate with device.
+   * @param p_address - mpu6050 device address.
    */
   explicit constexpr mpu6050(i2c& p_i2c, hal::byte p_device_address = 0x68)
     : m_i2c(&p_i2c)
