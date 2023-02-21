@@ -1,9 +1,15 @@
 cmake_minimum_required(VERSION 3.20)
 
+if(NOT DEFINED CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug" CACHE INTERNAL "Default to Debug Build")
+endif(NOT DEFINED CMAKE_BUILD_TYPE)
+
+set(CMAKE_TOOLCHAIN_FILE conan_toolchain.cmake)
+
 project(demos VERSION 0.0.1 LANGUAGES CXX)
 
 find_package(libhal-lpc40xx REQUIRED CONFIG)
-find_package(libmpu REQUIRED CONFIG)
+find_package(libhal-mpu REQUIRED CONFIG)
 find_package(libhal-util REQUIRED CONFIG)
 
 set(DEMOS mpu6050)

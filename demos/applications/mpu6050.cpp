@@ -1,7 +1,7 @@
 
 #include <libhal-util/serial.hpp>
 #include <libhal-util/steady_clock.hpp>
-#include <mpu6050.hpp>
+#include <libhal-mpu/mpu6050.hpp>
 
 #include "../hardware_map.hpp"
 
@@ -22,6 +22,16 @@ hal::status application(hardware_map& p_map)
   HAL_CHECK(mpu.configure_full_scale(hal::mpu::mpu6050::max_acceleration::g2));
   (void)hal::delay(clock, 500ms);
   auto acceleration = HAL_CHECK(mpu.read());
+  hal::print<128>(console,
+                  "Scale: 2g \t x = %fg, y = %fg, z = %fg \n",
+                  acceleration.x,
+                  acceleration.y,
+                  acceleration.z);
+  (void)hal::delay(clock, 500ms);
+  hal::print(console, "Reading acceleration... \n");
+  HAL_CHECK(mpu.configure_full_scale(hal::mpu::mpu6050::max_acceleration::g4));
+  (void)hal::delay(clock, 500ms);
+  acceleration = HAL_CHECK(mpu.read());
   hal::print<128>(console,
                   "Scale: 2g \t x = %fg, y = %fg, z = %fg \n",
                   acceleration.x,
