@@ -5,11 +5,10 @@
 #include <libhal-util/map.hpp>
 #include <libhal/accelerometer.hpp>
 
-namespace hal::mpu
-{
+namespace hal::mpu {
 class mpu6050 : public hal::accelerometer
 {
- public:
+public:
   /// The device address when A0 is connected to GND.
   static constexpr hal::byte address_ground = 0b110'1000;
   /// The device address when A0 is connected to V+.
@@ -50,7 +49,7 @@ class mpu6050 : public hal::accelerometer
    * @return result<mpu6050> std::errc::invalid_byte_sequence will be thrown
    * when MPU6050 internal register does not have the correct ID
    */
-  static result<mpu6050> create(hal::i2c & p_i2c,
+  static result<mpu6050> create(hal::i2c& p_i2c,
                                 hal::byte p_device_address = address_ground)
   {
     mpu6050 mpu(p_i2c, p_device_address);
@@ -66,17 +65,17 @@ class mpu6050 : public hal::accelerometer
    * @return hal::status - success or errors from i2c communication
    */
   [[nodiscard]] hal::status configure_full_scale(
-      max_acceleration p_gravity_code)
+    max_acceleration p_gravity_code)
   {
     m_gscale = static_cast<hal::byte>(p_gravity_code);
 
     constexpr auto scale_mask = hal::bit::mask::from<3, 4>();
 
     auto config =
-        HAL_CHECK(hal::write_then_read<1>(*m_i2c,
-                                          m_address,
-                                          std::array{ configuration_register },
-                                          hal::never_timeout()));
+      HAL_CHECK(hal::write_then_read<1>(*m_i2c,
+                                        m_address,
+                                        std::array{ configuration_register },
+                                        hal::never_timeout()));
 
     hal::bit::modify(config[0]).insert<scale_mask>(m_gscale);
     HAL_CHECK(hal::write(*m_i2c,
@@ -109,15 +108,16 @@ class mpu6050 : public hal::accelerometer
     return active_mode(false);
   }
 
- private:
+private:
   /**
    * @brief MPU6050 Constructor
    *
    * @param i2c - i2c peripheral used to commnicate with device.
    * @param address - mpu6050 device address.
    */
-  explicit constexpr mpu6050(i2c & p_i2c, hal::byte p_device_address = 0x68)
-      : m_i2c(&p_i2c), m_address(p_device_address)
+  explicit constexpr mpu6050(i2c& p_i2c, hal::byte p_device_address = 0x68)
+    : m_i2c(&p_i2c)
+    , m_address(p_device_address)
   {
   }
 
@@ -125,7 +125,7 @@ class mpu6050 : public hal::accelerometer
   {
     accelerometer::read_t acceleration;
     constexpr uint16_t bytes_per_axis = 2;
-    constexpr uint8_t number_of_axis  = 3;
+    constexpr uint8_t number_of_axis = 3;
 
     std::array<hal::byte, bytes_per_axis * number_of_axis> xyz_acceleration;
     HAL_CHECK(hal::write_then_read(*m_i2c,
@@ -149,21 +149,21 @@ class mpu6050 : public hal::accelerometer
      * 16 value.
      */
     const int16_t x =
-        static_cast<int16_t>(xyz_acceleration[0] << 8 | xyz_acceleration[1]);
+      static_cast<int16_t>(xyz_acceleration[0] << 8 | xyz_acceleration[1]);
     const int16_t y =
-        static_cast<int16_t>(xyz_acceleration[2] << 8 | xyz_acceleration[3]);
+      static_cast<int16_t>(xyz_acceleration[2] << 8 | xyz_acceleration[3]);
     const int16_t z =
-        static_cast<int16_t>(xyz_acceleration[4] << 8 | xyz_acceleration[5]);
+      static_cast<int16_t>(xyz_acceleration[4] << 8 | xyz_acceleration[5]);
 
     // Convert the 16 bit value into a floating point value m/S^2
     constexpr float max =
-        static_cast<float>(std::numeric_limits<int16_t>::max());
+      static_cast<float>(std::numeric_limits<int16_t>::max());
     constexpr float min =
-        static_cast<float>(std::numeric_limits<int16_t>::min());
+      static_cast<float>(std::numeric_limits<int16_t>::min());
 
     const float output_limits =
-        static_cast<float>(1 << (static_cast<int>(m_gscale) + 1));
-    auto input_range  = std::make_pair(max, min);
+      static_cast<float>(1 << (static_cast<int>(m_gscale) + 1));
+    auto input_range = std::make_pair(max, min);
     auto output_range = std::make_pair(-output_limits, output_limits);
 
     acceleration.x = hal::map(x, input_range, output_range);
@@ -178,10 +178,10 @@ class mpu6050 : public hal::accelerometer
     constexpr auto sleep_mask = hal::bit::mask::from<6>();
 
     auto control =
-        HAL_CHECK(hal::write_then_read<1>(*m_i2c,
-                                          m_address,
-                                          std::array{ initalizing_register },
-                                          hal::never_timeout()));
+      HAL_CHECK(hal::write_then_read<1>(*m_i2c,
+                                        m_address,
+                                        std::array{ initalizing_register },
+                                        hal::never_timeout()));
 
     hal::bit::modify(control[0]).insert<sleep_mask>(!p_is_active);
 
@@ -198,13 +198,12 @@ class mpu6050 : public hal::accelerometer
     static constexpr hal::byte expected_device_id = 0x68;
     // Read out the identity register
     auto device_id =
-        HAL_CHECK(hal::write_then_read<1>(*m_i2c,
-                                          m_address,
-                                          std::array{ who_am_i_register },
-                                          hal::never_timeout()));
+      HAL_CHECK(hal::write_then_read<1>(*m_i2c,
+                                        m_address,
+                                        std::array{ who_am_i_register },
+                                        hal::never_timeout()));
 
-    if (device_id[0] != expected_device_id)
-    {
+    if (device_id[0] != expected_device_id) {
       return hal::new_error(std::errc::illegal_byte_sequence);
     }
 
@@ -212,7 +211,7 @@ class mpu6050 : public hal::accelerometer
   }
 
   /// The I2C peripheral used for communication with the device.
-  hal::i2c * m_i2c;
+  hal::i2c* m_i2c;
   /// Gscale is the min and maximum gs the device will read.
   hal::byte m_gscale = 0x00;
   /// The configurable device address used for communication.
