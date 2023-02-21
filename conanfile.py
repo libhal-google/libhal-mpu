@@ -12,6 +12,7 @@ required_conan_version = ">=1.50.0"
 class LibmpuConan(ConanFile):
     name = "libhal-mpu"
     version = "1.0.1"
+
     license = "Apache-2.0"
     url = "https://github.com/conan-io/conan-center-index"
     homepage = "https://libhal.github.io/libmpu"
