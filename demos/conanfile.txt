@@ -1,7 +1,7 @@
 [requires]
-libhal-lpc40xx/0.3.9
-libmpu/0.3.0
-libhal-util/0.3.7
+libhal-lpc40xx/1.0.1
+libhal-mpu/1.0.1
+libhal-util/1.0.0
 
 [tool_requires]
 gnu-arm-embedded-toolchain/11.3.0

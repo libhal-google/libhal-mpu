@@ -79,10 +79,11 @@ public:
                                         hal::never_timeout()));
 
     hal::bit::modify(config[0]).insert<scale_mask>(m_gscale);
-    return hal::write(*m_i2c,
-                      m_address,
-                      std::array{ configuration_register, config[0] },
-                      hal::never_timeout());
+    HAL_CHECK(hal::write(*m_i2c,
+                         m_address,
+                         std::array{ configuration_register, config[0] },
+                         hal::never_timeout()));
+    return hal::success();
   }
 
   /**
@@ -185,10 +186,11 @@ private:
 
     hal::bit::modify(control[0]).insert<sleep_mask>(!p_is_active);
 
-    return hal::write(*m_i2c,
-                      m_address,
-                      std::array{ initalizing_register, control[0] },
-                      hal::never_timeout());
+    HAL_CHECK(hal::write(*m_i2c,
+                         m_address,
+                         std::array{ initalizing_register, control[0] },
+                         hal::never_timeout()));
+    return hal::success();
   }
 
   /// Verify that the device is the correct device
