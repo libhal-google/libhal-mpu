@@ -19,7 +19,7 @@ class LibmpuConan(ConanFile):
         "A collection of drivers for the MPU series IMU devices")
     topics = ("mpu", "IMU", "accelerometer")
     settings = "compiler"
-    exports_sources = "include/*"
+    exports_sources = "include/*", "LICENSE"
     no_copy_source = True
 
     def package_id(self):

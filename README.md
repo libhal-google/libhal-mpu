@@ -38,8 +38,7 @@ The second command will enable revision mode which is required to use
 `libhal-trunk`.
 
 ```bash
-conan remote add libhal-trunk https://libhal.jfrog.io/artifactory/api/conan/trunk-conan --insert
-conan config set general.revisions_enabled=True
+conan remote add libhal-trunk https://libhal.jfrog.io/artifactory/api/conan/trunk-conan
 ```
 
 Now when you run
