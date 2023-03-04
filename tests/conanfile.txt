@@ -1,8 +1,0 @@
-[requires]
-boost-ext-ut/1.1.8
-libhal-mpu/0.0.1
-
-[generators]
-CMakeToolchain
-CMakeDeps
-VirtualRunEnv

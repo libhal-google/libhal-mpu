@@ -10,16 +10,20 @@ class TestPackageConan(ConanFile):
 
     def requirements(self):
         self.requires(self.tested_reference_str)
+        self.test_requires("boost-ext-ut/1.1.9")
 
     def layout(self):
         cmake_layout(self)
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure()
+        if self.settings.os == "Windows":
+            cmake.configure()
+        else:
+            cmake.configure(variables={"ENABLE_ASAN": True})
         cmake.build()
 
     def test(self):
         if not cross_building(self):
-            bin_path = os.path.join(self.cpp.build.bindirs[0], "test_package")
+            bin_path = os.path.join(self.cpp.build.bindirs[0], "unit_test")
             self.run(bin_path, env="conanrun")
