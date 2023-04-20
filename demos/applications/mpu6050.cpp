@@ -1,7 +1,7 @@
 
+#include <libhal-mpu/mpu6050.hpp>
 #include <libhal-util/serial.hpp>
 #include <libhal-util/steady_clock.hpp>
-#include <libhal-mpu/mpu6050.hpp>
 
 #include "../hardware_map.hpp"
 
