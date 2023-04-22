@@ -21,7 +21,7 @@ class RmdDemos(ConanFile):
     generators = "CMakeToolchain", "CMakeDeps", "VirtualBuildEnv"
 
     def requirements(self):
-        self.requires("libhal-lpc40xx/[^1.0.1]")
+        self.requires("libhal-lpc40/[^1.0.1]")
         self.requires("libhal-util/[^1.0.0]")
         self.requires("libhal-mpu/1.0.1")
         self.tool_requires("gnu-arm-embedded-toolchain/11.3.0")
