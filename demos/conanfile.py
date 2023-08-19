@@ -16,19 +16,23 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, cmake_layout
 
 
-class RmdDemos(ConanFile):
-    settings = "compiler", "build_type"
+class demos(ConanFile):
+    settings = "compiler", "build_type", "os", "arch"
     generators = "CMakeToolchain", "CMakeDeps", "VirtualBuildEnv"
+    options = {"platform": ["ANY"]}
+    default_options = {"platform": "unspecified"}
+
+    def build_requirements(self):
+        self.tool_requires("libhal-cmake-util/[^1.0.0]")
 
     def requirements(self):
-        self.requires("libhal-lpc40/[^1.0.1]")
-        self.requires("libhal-util/[^1.0.0]")
-        self.requires("libhal-mpu/1.0.1")
-        self.tool_requires("gnu-arm-embedded-toolchain/11.3.0")
-        self.tool_requires("cmake-arm-embedded/0.1.1")
+        if str(self.options.platform).startswith("lpc40"):
+            self.requires("libhal-lpc40/[^2.1.2]")
+        self.requires("libhal-mpu/2.0.0")
 
     def layout(self):
-        cmake_layout(self)
+        platform_directory = "build/" + str(self.options.platform)
+        cmake_layout(self, build_folder=platform_directory)
 
     def build(self):
         cmake = CMake(self)
