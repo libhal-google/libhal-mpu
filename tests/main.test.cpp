@@ -13,10 +13,10 @@
 // limitations under the License.
 
 namespace hal::mpu {
-extern void empty_test();
+extern void mpu6050_test();
 }  // namespace hal::mpu
 
 int main()
 {
-  hal::mpu::empty_test();
+  hal::mpu::mpu6050_test();
 }

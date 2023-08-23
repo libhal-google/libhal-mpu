@@ -27,7 +27,7 @@ public:
   static constexpr hal::byte address_ground = 0b110'1000;
   /// The device address when A0 is connected to V+.
   static constexpr hal::byte address_voltage_high = 0b110'1001;
-  
+
   enum class max_acceleration : hal::byte
   {
     /// 2x the average earth gravity of acceleration
