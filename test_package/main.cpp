@@ -12,7 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <libhal-mpu/mpu6050.hpp>
+
 int main()
 {
-  return 0;
+  using namespace std::literals;
 }
+
+namespace boost {
+void throw_exception(std::exception const& e)
+{
+  hal::halt();
+}
+}  // namespace boost

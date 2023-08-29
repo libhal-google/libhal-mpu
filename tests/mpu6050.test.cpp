@@ -11,11 +11,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+#include <boost/ut.hpp>
+#include <libhal-mpu/mpu6050.hpp>
 
-#pragma once
+namespace hal::mpu {
+void mpu6050_test()
+{
+  using namespace boost::ut;
+  using namespace std::literals;
 
-#include <string_view>
-
-namespace hal::config {
-constexpr std::string_view platform = "test_package";
-}  // namespace hal::config
+  "mpu6050::create()"_test = []() {
+    // Setup
+    // Exercise
+    // Verify
+  };
+};
+}  // namespace hal::mpu
